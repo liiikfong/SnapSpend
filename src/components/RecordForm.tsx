@@ -37,7 +37,7 @@ export default function RecordForm({
   conversionHint,
 }: Props) {
   const fieldClass =
-    'h-11 w-full min-w-0 rounded-xl border border-slate-200 bg-white px-3 text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/40'
+    'h-11 w-full min-w-0 rounded-xl border border-slate-200 bg-white px-3 text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF385C]/25'
   const [amount, setAmount] = useState(String(initialValues?.amount ?? defaultValues.amount))
   const [currency, setCurrency] = useState(initialValues?.currency ?? defaultValues.currency)
   const [merchant, setMerchant] = useState(initialValues?.merchant ?? defaultValues.merchant)
@@ -133,7 +133,7 @@ export default function RecordForm({
         </div>
       </div>
       {conversionHint && (
-        <p className="mt-3 rounded-xl border border-cyan-200 bg-cyan-50 px-3 py-2 text-xs text-cyan-700">
+        <p className="mt-3 rounded-xl border border-[#FFD6DE] bg-[#FFF1F3] px-3 py-2 text-xs text-[#C72D4A]">
           {conversionHint}
         </p>
       )}
@@ -185,7 +185,7 @@ export default function RecordForm({
         <button
           type="submit"
           disabled={submitting}
-          className="flex-1 rounded-xl bg-cyan-600 py-2.5 font-medium text-white shadow-sm transition hover:bg-cyan-500 disabled:opacity-50"
+          className="flex-1 rounded-xl bg-[#FF385C] py-2.5 font-medium text-white shadow-sm transition hover:bg-[#e43253] disabled:opacity-50"
         >
           {submitting ? '保存中…' : submitLabel}
         </button>

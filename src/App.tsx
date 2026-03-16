@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
@@ -7,30 +7,35 @@ import LedgerPage from '@/pages/LedgerPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
+  const location = useLocation()
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-slate-400">
+      <div className="min-h-screen flex items-center justify-center text-slate-500">
         加载中…
       </div>
     )
   }
   if (!user) {
-    return <Navigate to="/login" replace />
+    const redirect = encodeURIComponent(`${location.pathname}${location.search}`)
+    return <Navigate to={`/login?redirect=${redirect}`} replace />
   }
   return <>{children}</>
 }
 
 function PublicOnlyRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
+  const [searchParams] = useSearchParams()
+  const redirect = searchParams.get('redirect')
+  const safeRedirect = redirect?.startsWith('/') ? redirect : '/ledger'
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-slate-400">
+      <div className="min-h-screen flex items-center justify-center text-slate-500">
         加载中…
       </div>
     )
   }
   if (user) {
-    return <Navigate to="/ledger" replace />
+    return <Navigate to={safeRedirect} replace />
   }
   return <>{children}</>
 }

@@ -78,6 +78,8 @@ VITE_API_BASE=https://你的项目.vercel.app
 
 （若你的 Shortcut 版本支持「请求体」里直接选「文件」而不是 Base64，可改为 multipart 上传，届时需在 API 中开放对应解析。）
 
+更详细的逐步配置见：`docs/iphone-shortcut-快速记账.md`
+
 ---
 
 ## 项目结构

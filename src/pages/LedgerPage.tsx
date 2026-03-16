@@ -46,8 +46,8 @@ export default function LedgerPage() {
           <p className="mt-1 text-sm font-semibold text-rose-700">{formatMoney(summary.expense, BASE_CURRENCY)}</p>
         </div>
         <div className="rounded-2xl border border-cyan-100 bg-cyan-50/90 p-3 text-center">
-          <p className="text-[11px] text-cyan-700/80">本月结余</p>
-          <p className="mt-1 text-sm font-semibold text-cyan-700">{formatMoney(summary.net, BASE_CURRENCY)}</p>
+          <p className="text-[11px] text-[#C72D4A]/80">本月结余</p>
+          <p className="mt-1 text-sm font-semibold text-[#C72D4A]">{formatMoney(summary.net, BASE_CURRENCY)}</p>
         </div>
       </div>
 

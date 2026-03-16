@@ -127,7 +127,7 @@ export default function CapturePage() {
           type="button"
           disabled={recognizing}
           onClick={() => fileInputRef.current?.click()}
-          className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm font-medium text-cyan-700 transition hover:bg-cyan-100 disabled:opacity-60"
+          className="rounded-2xl border border-[#FFD6DE] bg-[#FFF1F3] px-4 py-3 text-sm font-medium text-[#FF385C] transition hover:bg-[#FFE8EC] disabled:opacity-60"
         >
           {recognizing ? '识别中…' : '从图片识别'}
         </button>

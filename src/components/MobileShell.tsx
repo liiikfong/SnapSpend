@@ -24,7 +24,7 @@ export default function MobileShell({ active, title, subtitle, children }: Props
             <button
               type="button"
               onClick={() => signOut()}
-              className="text-xs font-medium text-cyan-700 hover:text-cyan-600"
+              className="text-xs font-medium text-[#FF385C] hover:text-[#e43253]"
             >
               退出
             </button>
@@ -39,7 +39,7 @@ export default function MobileShell({ active, title, subtitle, children }: Props
           <Link
             to="/record"
             className={`flex w-1/2 flex-col items-center rounded-xl py-2 text-xs ${
-              active === 'capture' ? 'bg-cyan-100 text-cyan-700' : 'text-slate-500'
+              active === 'capture' ? 'bg-[#FFF1F3] text-[#FF385C]' : 'text-slate-500'
             }`}
           >
             <span className="text-base">✦</span>
@@ -48,7 +48,7 @@ export default function MobileShell({ active, title, subtitle, children }: Props
           <Link
             to="/ledger"
             className={`flex w-1/2 flex-col items-center rounded-xl py-2 text-xs ${
-              active === 'ledger' ? 'bg-cyan-100 text-cyan-700' : 'text-slate-500'
+              active === 'ledger' ? 'bg-[#FFF1F3] text-[#FF385C]' : 'text-slate-500'
             }`}
           >
             <span className="text-base">☰</span>
