@@ -71,9 +71,28 @@ async function recognizeWithVision(imageBase64: string, mimeType: string): Promi
   const content = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
   if (!content) throw new Error('No content in Gemini response')
 
-  // 允许被 markdown 代码块包裹
+  // 允许被 markdown 代码块包裹，并容错模型返回的残缺 JSON
   const jsonStr = content.replace(/^```(?:json)?\s*|\s*```$/g, '').trim()
-  const parsed = JSON.parse(jsonStr) as Record<string, unknown>
+  let parsed: Record<string, unknown>
+  try {
+    parsed = JSON.parse(jsonStr) as Record<string, unknown>
+  } catch {
+    // 解析失败时用正则抽出关键字段，避免因未闭合字符串等导致整段失败
+    const amountMatch = jsonStr.match(/"amount"\s*:\s*(-?\d+\.?\d*)/)
+    const merchantMatch = jsonStr.match(/"merchant"\s*:\s*"((?:[^"\\]|\\.)*)"/)
+    const dateMatch = jsonStr.match(/"date"\s*:\s*"(\d{4}-\d{2}-\d{2})"/)
+    const typeMatch = jsonStr.match(/"type"\s*:\s*"([^"]*)"/)
+    const noteMatch = jsonStr.match(/"note"\s*:\s*"((?:[^"\\]|\\.)*)"/)
+    const amount = amountMatch ? Number(amountMatch[1]) : NaN
+    if (Number.isNaN(amount)) throw new Error('识别结果格式异常，请重试或换一张更清晰的截图。')
+    parsed = {
+      amount,
+      merchant: merchantMatch ? merchantMatch[1] : '',
+      date: dateMatch ? dateMatch[1] : new Date().toISOString().slice(0, 10),
+      type: typeMatch ? typeMatch[1] : '支出',
+      note: noteMatch ? noteMatch[1] : '',
+    }
+  }
   const amount = Number(parsed.amount)
   if (Number.isNaN(amount)) throw new Error('Invalid amount from recognition')
 
