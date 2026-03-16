@@ -142,8 +142,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         await supabase.from('pending_recognitions').delete().eq('token', token)
         return res.status(404).json({ error: 'Token expired' })
       }
-
-      await supabase.from('pending_recognitions').delete().eq('token', token)
+      // Do not delete token immediately.
+      // iOS/Safari or auth redirect flows may trigger duplicate GETs.
+      // Token validity is still bounded by expires_at.
       return res.status(200).json(row.result as RecognitionResult)
     } catch (e) {
       console.error(e)
