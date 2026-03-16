@@ -23,40 +23,49 @@ export type RecognitionResult = {
 }
 
 async function recognizeWithVision(imageBase64: string, mimeType: string): Promise<RecognitionResult> {
-  const apiKey = process.env.OPENAI_API_KEY
-  if (!apiKey) throw new Error('OPENAI_API_KEY not set')
+  const apiKey = process.env.GEMINI_API_KEY
+  if (!apiKey) throw new Error('GEMINI_API_KEY not set')
 
-  const url = 'data:' + (mimeType || 'image/jpeg') + ';base64,' + imageBase64
-
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + apiKey,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      max_tokens: 500,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            { type: 'text', text: RECOGNITION_PROMPT },
-            { type: 'image_url', image_url: { url } },
-          ],
+  const model = 'gemini-2.0-flash'
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              { text: RECOGNITION_PROMPT },
+              {
+                inline_data: {
+                  mime_type: mimeType || 'image/jpeg',
+                  data: imageBase64,
+                },
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          maxOutputTokens: 500,
+          responseMimeType: 'application/json',
         },
-      ],
-    }),
-  })
+      }),
+    }
+  )
 
   if (!res.ok) {
     const err = await res.text()
-    throw new Error('OpenAI API error: ' + res.status + ' ' + err)
+    throw new Error('Gemini API error: ' + res.status + ' ' + err)
   }
 
-  const data = (await res.json()) as { choices?: { message?: { content?: string } }[] }
-  const content = data.choices?.[0]?.message?.content?.trim()
-  if (!content) throw new Error('No content in OpenAI response')
+  const data = (await res.json()) as {
+    candidates?: { content?: { parts?: { text?: string }[] } }[]
+    error?: { message?: string }
+  }
+  if (data.error) throw new Error(data.error.message || 'Gemini API error')
+  const content = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
+  if (!content) throw new Error('No content in Gemini response')
 
   // 允许被 markdown 代码块包裹
   const jsonStr = content.replace(/^```(?:json)?\s*|\s*```$/g, '').trim()

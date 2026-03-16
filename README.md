@@ -43,7 +43,7 @@ npm run dev
 | `VITE_SUPABASE_ANON_KEY` | Supabase anon public key |
 | `SUPABASE_URL` | 同上（API 用） |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase **Project Settings → API** 里的 **service_role** key（仅服务端，勿泄露） |
-| `OPENAI_API_KEY` | [OpenAI](https://platform.openai.com/api-keys) 的 API Key（用于 gpt-4o 识别账单截图） |
+| `GEMINI_API_KEY` | [Google AI Studio](https://aistudio.google.com/apikey) 的 API Key（用于 Gemini 识别账单截图） |
 
 3. 重新部署一次，使环境变量生效。
 

@@ -11,7 +11,7 @@
 3. **在 Vercel 配环境变量**  
    - `VITE_SUPABASE_URL`、`VITE_SUPABASE_ANON_KEY`（前端用）  
    - `SUPABASE_URL`、`SUPABASE_SERVICE_ROLE_KEY`（API 用，service_role 在 Supabase → Project Settings → API）  
-   - `OPENAI_API_KEY`（[OpenAI API Keys](https://platform.openai.com/api-keys) 创建）
+   - `GEMINI_API_KEY`（[Google AI Studio](https://aistudio.google.com/apikey) 创建）
 
 4. **重新部署**  
    保存环境变量后触发一次 Redeploy。
