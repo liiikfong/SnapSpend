@@ -26,8 +26,8 @@ async function recognizeWithVision(imageBase64: string, mimeType: string): Promi
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) throw new Error('GEMINI_API_KEY not set')
 
-  // 优先用 1.5-flash（免费额度通常更宽松），若你 2.0 有配额可改为 gemini-2.0-flash
-  const model = process.env.GEMINI_MODEL || 'gemini-1.5-flash'
+  // Free tier 可用：gemini-2.5-flash（500 次/天）或 gemini-2.5-flash-lite（1000 次/天，配 GEMINI_MODEL）
+  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash'
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
     {
