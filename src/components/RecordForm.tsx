@@ -36,6 +36,8 @@ export default function RecordForm({
   submitLabel,
   conversionHint,
 }: Props) {
+  const fieldClass =
+    'h-11 w-full min-w-0 rounded-xl border border-slate-200 bg-white px-3 text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/40'
   const [amount, setAmount] = useState(String(initialValues?.amount ?? defaultValues.amount))
   const [currency, setCurrency] = useState(initialValues?.currency ?? defaultValues.currency)
   const [merchant, setMerchant] = useState(initialValues?.merchant ?? defaultValues.merchant)
@@ -77,15 +79,15 @@ export default function RecordForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-white/15 bg-white/5 p-4 backdrop-blur-xl">
+    <form onSubmit={handleSubmit} className="rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-[0_18px_36px_rgba(15,23,42,0.08)] backdrop-blur">
       {error && (
-        <div className="mb-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm px-3 py-2">
+        <div className="mb-3 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-600">
           {error}
         </div>
       )}
       <div className="grid gap-4 sm:grid-cols-3">
-        <div>
-          <label htmlFor="amount" className="block text-sm font-medium text-slate-400 mb-1">
+        <div className="min-w-0">
+          <label htmlFor="amount" className="mb-1 block text-sm font-medium text-slate-600">
             金额 *
           </label>
           <input
@@ -94,20 +96,20 @@ export default function RecordForm({
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full rounded-lg bg-slate-800 border border-slate-600 text-slate-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className={fieldClass}
             placeholder="0.00"
             required
           />
         </div>
-        <div>
-          <label htmlFor="currency" className="mb-1 block text-sm font-medium text-slate-400">
+        <div className="min-w-0">
+          <label htmlFor="currency" className="mb-1 block text-sm font-medium text-slate-600">
             币种
           </label>
           <select
             id="currency"
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
-            className="w-full rounded-xl border border-slate-600 bg-slate-900/60 px-3 py-2.5 text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className={fieldClass}
           >
             {CURRENCIES.map((c) => (
               <option key={c} value={c}>
@@ -116,8 +118,8 @@ export default function RecordForm({
             ))}
           </select>
         </div>
-        <div>
-          <label htmlFor="date" className="block text-sm font-medium text-slate-400 mb-1">
+        <div className="min-w-0">
+          <label htmlFor="date" className="mb-1 block text-sm font-medium text-slate-600">
             日期 *
           </label>
           <input
@@ -125,18 +127,18 @@ export default function RecordForm({
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-lg bg-slate-800 border border-slate-600 text-slate-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className={`${fieldClass} date-input`}
             required
           />
         </div>
       </div>
       {conversionHint && (
-        <p className="mt-3 rounded-xl border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs text-cyan-200">
+        <p className="mt-3 rounded-xl border border-cyan-200 bg-cyan-50 px-3 py-2 text-xs text-cyan-700">
           {conversionHint}
         </p>
       )}
       <div className="mt-4">
-        <label htmlFor="merchant" className="block text-sm font-medium text-slate-400 mb-1">
+        <label htmlFor="merchant" className="mb-1 block text-sm font-medium text-slate-600">
           商户 / 对方
         </label>
         <input
@@ -144,19 +146,19 @@ export default function RecordForm({
           type="text"
           value={merchant}
           onChange={(e) => setMerchant(e.target.value)}
-          className="w-full rounded-lg bg-slate-800 border border-slate-600 text-slate-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          className={fieldClass}
           placeholder="如：星巴克、张三"
         />
       </div>
       <div className="mt-4">
-        <label htmlFor="category" className="block text-sm font-medium text-slate-400 mb-1">
+        <label htmlFor="category" className="mb-1 block text-sm font-medium text-slate-600">
           分类
         </label>
         <select
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full rounded-lg bg-slate-800 border border-slate-600 text-slate-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          className={fieldClass}
         >
           <option value="">选择分类</option>
           {categories.map((c) => (
@@ -167,7 +169,7 @@ export default function RecordForm({
         </select>
       </div>
       <div className="mt-4">
-        <label htmlFor="note" className="block text-sm font-medium text-slate-400 mb-1">
+        <label htmlFor="note" className="mb-1 block text-sm font-medium text-slate-600">
           备注
         </label>
         <input
@@ -175,7 +177,7 @@ export default function RecordForm({
           type="text"
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="w-full rounded-lg bg-slate-800 border border-slate-600 text-slate-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          className={fieldClass}
           placeholder="可选"
         />
       </div>
@@ -183,7 +185,7 @@ export default function RecordForm({
         <button
           type="submit"
           disabled={submitting}
-          className="flex-1 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-2.5 transition disabled:opacity-50"
+          className="flex-1 rounded-xl bg-cyan-600 py-2.5 font-medium text-white shadow-sm transition hover:bg-cyan-500 disabled:opacity-50"
         >
           {submitting ? '保存中…' : submitLabel}
         </button>
@@ -191,7 +193,7 @@ export default function RecordForm({
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-lg border border-slate-600 px-4 py-2.5 text-slate-300 hover:bg-slate-700"
+            className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-slate-600 hover:bg-slate-50"
           >
             取消
           </button>

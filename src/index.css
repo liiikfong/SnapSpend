@@ -3,13 +3,25 @@
 @tailwind utilities;
 
 body {
-  @apply text-slate-100 font-sans antialiased min-h-screen;
+  @apply text-slate-900 font-sans antialiased min-h-screen;
   background:
-    radial-gradient(100% 60% at 0% 0%, rgba(56, 189, 248, 0.2) 0%, transparent 50%),
-    radial-gradient(120% 80% at 100% 0%, rgba(29, 78, 216, 0.16) 0%, transparent 45%),
-    #030712;
+    radial-gradient(110% 70% at 0% 0%, rgba(56, 189, 248, 0.18) 0%, transparent 52%),
+    radial-gradient(120% 85% at 100% 0%, rgba(16, 185, 129, 0.14) 0%, transparent 50%),
+    linear-gradient(180deg, #f8fbff 0%, #eef5ff 50%, #f8fbff 100%);
 }
 
 #root {
   min-height: 100vh;
+}
+
+input[type='date'].date-input {
+  width: 100%;
+  min-width: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+}
+
+input[type='date'].date-input::-webkit-date-and-time-value {
+  text-align: left;
 }

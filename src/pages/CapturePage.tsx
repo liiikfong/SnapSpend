@@ -127,18 +127,18 @@ export default function CapturePage() {
           type="button"
           disabled={recognizing}
           onClick={() => fileInputRef.current?.click()}
-          className="rounded-2xl border border-cyan-300/30 bg-cyan-400/15 px-4 py-3 text-sm font-medium text-cyan-200 transition hover:bg-cyan-400/25 disabled:opacity-60"
+          className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm font-medium text-cyan-700 transition hover:bg-cyan-100 disabled:opacity-60"
         >
           {recognizing ? '识别中…' : '从图片识别'}
         </button>
-        <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-          <p className="text-xs text-slate-400">默认基准币种</p>
-          <p className="mt-1 text-sm font-medium text-slate-100">{BASE_CURRENCY}</p>
+        <div className="rounded-2xl border border-slate-200 bg-white/90 px-4 py-3">
+          <p className="text-xs text-slate-500">默认基准币种</p>
+          <p className="mt-1 text-sm font-medium text-slate-800">{BASE_CURRENCY}</p>
         </div>
       </div>
 
       {recognizeError && (
-        <div className="mb-4 rounded-xl border border-amber-300/30 bg-amber-200/10 px-3 py-2 text-sm text-amber-200">
+        <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700">
           {recognizeError}
         </div>
       )}

@@ -37,17 +37,17 @@ export default function LedgerPage() {
   return (
     <MobileShell active="ledger" title="账单总览" subtitle="按基准币种统一汇总，支持多币种记录">
       <div className="mb-4 grid grid-cols-3 gap-2">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-          <p className="text-[11px] text-slate-400">本月收入</p>
-          <p className="mt-1 text-sm font-semibold text-emerald-300">{formatMoney(summary.income, BASE_CURRENCY)}</p>
+        <div className="rounded-2xl border border-emerald-100 bg-emerald-50/80 p-3 text-center">
+          <p className="text-[11px] text-emerald-700/80">本月收入</p>
+          <p className="mt-1 text-sm font-semibold text-emerald-700">{formatMoney(summary.income, BASE_CURRENCY)}</p>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-          <p className="text-[11px] text-slate-400">本月支出</p>
-          <p className="mt-1 text-sm font-semibold text-rose-300">{formatMoney(summary.expense, BASE_CURRENCY)}</p>
+        <div className="rounded-2xl border border-rose-100 bg-rose-50/80 p-3 text-center">
+          <p className="text-[11px] text-rose-700/80">本月支出</p>
+          <p className="mt-1 text-sm font-semibold text-rose-700">{formatMoney(summary.expense, BASE_CURRENCY)}</p>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center">
-          <p className="text-[11px] text-slate-400">本月结余</p>
-          <p className="mt-1 text-sm font-semibold text-cyan-300">{formatMoney(summary.net, BASE_CURRENCY)}</p>
+        <div className="rounded-2xl border border-cyan-100 bg-cyan-50/90 p-3 text-center">
+          <p className="text-[11px] text-cyan-700/80">本月结余</p>
+          <p className="mt-1 text-sm font-semibold text-cyan-700">{formatMoney(summary.net, BASE_CURRENCY)}</p>
         </div>
       </div>
 
@@ -71,11 +71,11 @@ export default function LedgerPage() {
         </div>
       )}
 
-      <h2 className="mb-3 text-xs tracking-wide text-slate-400">最近账单</h2>
+      <h2 className="mb-3 text-xs tracking-wide text-slate-500">最近账单</h2>
       {loading ? (
-        <p className="text-sm text-slate-400">加载中…</p>
+        <p className="text-sm text-slate-500">加载中…</p>
       ) : records.length === 0 ? (
-        <p className="rounded-2xl border border-white/10 bg-white/5 px-4 py-5 text-sm text-slate-400">还没有记录，去「录入」页记第一笔吧。</p>
+        <p className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-5 text-sm text-slate-500">还没有记录，去「录入」页记第一笔吧。</p>
       ) : (
         <RecordList records={records} onEdit={(id) => setEditingId(id)} onDelete={deleteRecord} />
       )}
