@@ -15,6 +15,11 @@ export interface Database {
           user_id: string
           amount: number
           currency: string
+          amount_original: number | null
+          amount_base: number | null
+          base_currency: string | null
+          fx_rate: number | null
+          fx_source: string | null
           merchant: string | null
           category: string | null
           date: string
@@ -28,6 +33,11 @@ export interface Database {
           user_id: string
           amount: number
           currency?: string
+          amount_original?: number | null
+          amount_base?: number | null
+          base_currency?: string | null
+          fx_rate?: number | null
+          fx_source?: string | null
           merchant?: string | null
           category?: string | null
           date: string
@@ -41,6 +51,11 @@ export interface Database {
           user_id?: string
           amount?: number
           currency?: string
+          amount_original?: number | null
+          amount_base?: number | null
+          base_currency?: string | null
+          fx_rate?: number | null
+          fx_source?: string | null
           merchant?: string | null
           category?: string | null
           date?: string

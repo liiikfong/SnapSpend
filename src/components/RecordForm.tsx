@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { CURRENCIES } from '@/lib/currency'
 
 export type RecordFormValues = {
   amount: number
+  currency: string
   merchant: string
   category: string
   date: string
@@ -14,10 +16,12 @@ type Props = {
   onCancel?: () => void
   initialValues?: RecordFormValues
   submitLabel: string
+  conversionHint?: string
 }
 
 const defaultValues: RecordFormValues = {
   amount: 0,
+  currency: 'CNY',
   merchant: '',
   category: '',
   date: new Date().toISOString().slice(0, 10),
@@ -30,8 +34,10 @@ export default function RecordForm({
   onCancel,
   initialValues,
   submitLabel,
+  conversionHint,
 }: Props) {
   const [amount, setAmount] = useState(String(initialValues?.amount ?? defaultValues.amount))
+  const [currency, setCurrency] = useState(initialValues?.currency ?? defaultValues.currency)
   const [merchant, setMerchant] = useState(initialValues?.merchant ?? defaultValues.merchant)
   const [category, setCategory] = useState(initialValues?.category ?? defaultValues.category)
   const [date, setDate] = useState(initialValues?.date ?? defaultValues.date)
@@ -51,12 +57,14 @@ export default function RecordForm({
     try {
       await onSubmit({
         amount: num,
+        currency,
         merchant: merchant.trim(),
         category: category.trim(),
         date,
         note: note.trim(),
       })
       setAmount(String(defaultValues.amount))
+      setCurrency(defaultValues.currency)
       setMerchant(defaultValues.merchant)
       setCategory(defaultValues.category)
       setDate(defaultValues.date)
@@ -69,13 +77,13 @@ export default function RecordForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+    <form onSubmit={handleSubmit} className="rounded-2xl border border-white/15 bg-white/5 p-4 backdrop-blur-xl">
       {error && (
         <div className="mb-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm px-3 py-2">
           {error}
         </div>
       )}
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
         <div>
           <label htmlFor="amount" className="block text-sm font-medium text-slate-400 mb-1">
             金额 *
@@ -92,6 +100,23 @@ export default function RecordForm({
           />
         </div>
         <div>
+          <label htmlFor="currency" className="mb-1 block text-sm font-medium text-slate-400">
+            币种
+          </label>
+          <select
+            id="currency"
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value)}
+            className="w-full rounded-xl border border-slate-600 bg-slate-900/60 px-3 py-2.5 text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          >
+            {CURRENCIES.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
           <label htmlFor="date" className="block text-sm font-medium text-slate-400 mb-1">
             日期 *
           </label>
@@ -105,6 +130,11 @@ export default function RecordForm({
           />
         </div>
       </div>
+      {conversionHint && (
+        <p className="mt-3 rounded-xl border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs text-cyan-200">
+          {conversionHint}
+        </p>
+      )}
       <div className="mt-4">
         <label htmlFor="merchant" className="block text-sm font-medium text-slate-400 mb-1">
           商户 / 对方

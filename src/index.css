@@ -2,15 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg: #0f172a;
-  --surface: #1e293b;
-  --border: #334155;
-  --muted: #94a3b8;
-  --accent: #38bdf8;
-  --accent-hover: #7dd3fc;
+body {
+  @apply text-slate-100 font-sans antialiased min-h-screen;
+  background:
+    radial-gradient(100% 60% at 0% 0%, rgba(56, 189, 248, 0.2) 0%, transparent 50%),
+    radial-gradient(120% 80% at 100% 0%, rgba(29, 78, 216, 0.16) 0%, transparent 45%),
+    #030712;
 }
 
-body {
-  @apply bg-[var(--bg)] text-slate-100 font-sans antialiased min-h-screen;
+#root {
+  min-height: 100vh;
 }

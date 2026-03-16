@@ -23,7 +23,7 @@ export default function Register() {
       return
     }
     setSuccess('注册成功。请查收邮件确认（若 Supabase 开启了邮件确认），或直接登录。')
-    setTimeout(() => navigate('/record', { replace: true }), 1500)
+    setTimeout(() => navigate('/ledger', { replace: true }), 1500)
   }
 
   return (

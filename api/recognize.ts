@@ -7,6 +7,7 @@ const RECOGNITION_PROMPT = `你是一张账单/收款/转账截图的识别助�
 请从图片中识别并提取以下信息，严格按 JSON 格式输出，不要输出其他文字：
 {
   "amount": 数字（金额，支出为负数，收入为正数；若无法区分则支出为负）,
+  "currency": "ISO 4217 货币代码，如 CNY/USD/HKD/JPY。识别不到时填 CNY",
   "merchant": "商户或对方名称，没有则空字符串",
   "date": "YYYY-MM-DD，没有则用今天日期",
   "type": "支出 或 收入",
@@ -16,6 +17,7 @@ const RECOGNITION_PROMPT = `你是一张账单/收款/转账截图的识别助�
 
 export type RecognitionResult = {
   amount: number
+  currency: string
   merchant: string
   date: string
   type: string
@@ -79,6 +81,7 @@ async function recognizeWithVision(imageBase64: string, mimeType: string): Promi
   } catch {
     // 解析失败时用正则抽出关键字段，避免因未闭合字符串等导致整段失败
     const amountMatch = jsonStr.match(/"amount"\s*:\s*(-?\d+\.?\d*)/)
+    const currencyMatch = jsonStr.match(/"currency"\s*:\s*"([A-Za-z]{3})"/)
     const merchantMatch = jsonStr.match(/"merchant"\s*:\s*"((?:[^"\\]|\\.)*)"/)
     const dateMatch = jsonStr.match(/"date"\s*:\s*"(\d{4}-\d{2}-\d{2})"/)
     const typeMatch = jsonStr.match(/"type"\s*:\s*"([^"]*)"/)
@@ -87,6 +90,7 @@ async function recognizeWithVision(imageBase64: string, mimeType: string): Promi
     if (Number.isNaN(amount)) throw new Error('识别结果格式异常，请重试或换一张更清晰的截图。')
     parsed = {
       amount,
+      currency: currencyMatch ? currencyMatch[1].toUpperCase() : 'CNY',
       merchant: merchantMatch ? merchantMatch[1] : '',
       date: dateMatch ? dateMatch[1] : new Date().toISOString().slice(0, 10),
       type: typeMatch ? typeMatch[1] : '支出',
@@ -99,6 +103,7 @@ async function recognizeWithVision(imageBase64: string, mimeType: string): Promi
   const date = typeof parsed.date === 'string' ? parsed.date : new Date().toISOString().slice(0, 10)
   return {
     amount,
+    currency: typeof parsed.currency === 'string' ? parsed.currency.toUpperCase() : 'CNY',
     merchant: typeof parsed.merchant === 'string' ? parsed.merchant : '',
     date,
     type: typeof parsed.type === 'string' ? parsed.type : '支出',

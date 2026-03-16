@@ -20,7 +20,7 @@ export default function Login() {
       setError(err.message === 'Invalid login credentials' ? '邮箱或密码错误' : err.message)
       return
     }
-    navigate('/record', { replace: true })
+    navigate('/ledger', { replace: true })
   }
 
   return (

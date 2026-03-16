@@ -1,15 +1,10 @@
 import type { RecordRow } from '@/types/database'
+import { BASE_CURRENCY, currencySymbol, formatMoney, normalizeCurrency } from '@/lib/currency'
 
 type Props = {
   records: RecordRow[]
-  onEdit: (id: string) => void
+  onEdit?: (id: string) => void
   onDelete: (id: string) => void
-}
-
-function formatAmount(amount: number) {
-  const n = Number(amount)
-  const sign = n >= 0 ? '+' : ''
-  return `${sign}¥${Math.abs(n).toFixed(2)}`
 }
 
 function formatDate(dateStr: string) {
@@ -25,54 +20,48 @@ function formatDate(dateStr: string) {
 
 export default function RecordList({ records, onEdit, onDelete }: Props) {
   return (
-    <ul className="space-y-1">
+    <ul className="space-y-3">
       {records.map((r) => (
         <li
           key={r.id}
-          className="flex items-center justify-between gap-3 rounded-lg border border-slate-700/50 bg-slate-800/30 px-4 py-3"
+          className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[0_10px_30px_rgba(2,8,23,0.35)]"
         >
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <span
-                className={`font-medium ${Number(r.amount) >= 0 ? 'text-emerald-400' : 'text-red-400'}`}
-              >
-                {formatAmount(Number(r.amount))}
-              </span>
-              {r.merchant && (
-                <span className="truncate text-slate-300">{r.merchant}</span>
-              )}
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm text-slate-200">{r.merchant || '未命名交易'}</p>
+              <p className="mt-1 text-xs text-slate-400">{formatDate(r.date)}</p>
             </div>
-            <div className="mt-0.5 flex items-center gap-2 text-sm text-slate-500">
-              <span>{formatDate(r.date)}</span>
-              {r.category && (
-                <>
-                  <span>·</span>
-                  <span>{r.category}</span>
-                </>
-              )}
-              {r.note && (
-                <>
-                  <span>·</span>
-                  <span className="truncate">{r.note}</span>
-                </>
-              )}
+            <div className="text-right">
+              <p className={`text-base font-semibold ${Number(r.amount) >= 0 ? 'text-emerald-300' : 'text-rose-300'}`}>
+                {formatMoney(Number(r.amount_base ?? r.amount), normalizeCurrency(r.base_currency ?? BASE_CURRENCY))}
+              </p>
+              <p className="mt-1 text-xs text-slate-400">
+                {currencySymbol(r.currency)}{Number(r.amount_original ?? r.amount).toFixed(2)} {normalizeCurrency(r.currency)}
+              </p>
             </div>
           </div>
-          <div className="flex shrink-0 gap-1">
-            <button
-              type="button"
-              onClick={() => onEdit(r.id)}
-              className="rounded px-2 py-1 text-sm text-slate-400 hover:bg-slate-700 hover:text-slate-200"
-            >
-              编辑
-            </button>
+          <div className="mt-3 flex items-center justify-between">
+            <p className="truncate text-xs text-slate-400">
+              {[r.category, r.note].filter(Boolean).join(' · ') || '无分类 / 无备注'}
+            </p>
+            <div className="flex shrink-0 gap-1">
+              {onEdit && (
+                <button
+                  type="button"
+                  onClick={() => onEdit(r.id)}
+                  className="rounded-lg border border-white/10 px-2.5 py-1.5 text-xs text-slate-300 hover:bg-white/10"
+                >
+                  编辑
+                </button>
+              )}
             <button
               type="button"
               onClick={() => onDelete(r.id)}
-              className="rounded px-2 py-1 text-sm text-slate-400 hover:bg-red-500/20 hover:text-red-400"
+              className="rounded-lg border border-rose-300/20 px-2.5 py-1.5 text-xs text-rose-200 hover:bg-rose-300/20"
             >
               删除
             </button>
+            </div>
           </div>
         </li>
       ))}
