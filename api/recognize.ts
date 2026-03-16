@@ -26,7 +26,8 @@ async function recognizeWithVision(imageBase64: string, mimeType: string): Promi
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) throw new Error('GEMINI_API_KEY not set')
 
-  const model = 'gemini-2.0-flash'
+  // 优先用 1.5-flash（免费额度通常更宽松），若你 2.0 有配额可改为 gemini-2.0-flash
+  const model = process.env.GEMINI_MODEL || 'gemini-1.5-flash'
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
     {
@@ -56,6 +57,9 @@ async function recognizeWithVision(imageBase64: string, mimeType: string): Promi
 
   if (!res.ok) {
     const err = await res.text()
+    if (res.status === 429) {
+      throw new Error('识别服务已达当前配额上限，请明天再试或到 Google AI Studio 查看用量与配额。')
+    }
     throw new Error('Gemini API error: ' + res.status + ' ' + err)
   }
 
